@@ -1,4 +1,4 @@
-package com.example.helpinghand
+package com.sponikle.helpinghand
 
 import io.flutter.embedding.android.FlutterActivity
 

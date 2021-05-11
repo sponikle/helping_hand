@@ -29,7 +29,7 @@ class _RequestHelpState extends State<RequestHelp> {
       "address":address,
       "state":state,
       "district":district,
-      "descriptiom":description
+      "description":description
     };
 
     CollectionReference collectionReference = FirebaseFirestore.instance.collection("helpRequests");

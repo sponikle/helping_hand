@@ -65,7 +65,7 @@ class _BrowseHelpsState extends State<BrowseHelps> {
              return CardWidget(
                priority: helps[index]["_priority"],
                address:helps[index]["address"],
-               description:helps[index]["descriptiom"], 
+               description:helps[index]["description"], 
                district: helps[index]["district"],
                name:helps[index]["name"],
                reuqestType:helps[index]["requestType"],

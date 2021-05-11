@@ -6,9 +6,9 @@
     },
     "client": [{
         "client_info": {
-            "mobilesdk_app_id": "1:1050278293874:android:9d17a8af263d0669a82deb",
+            "mobilesdk_app_id": "1:1050278293874:android:245778406b46f799a82deb",
             "android_client_info": {
-                "package_name": "com.example.helpinghand"
+                "package_name": "com.sponikle.helpinghand"
             }
         },
         "oauth_client": [{
