@@ -9,7 +9,7 @@ class Addinformation extends StatefulWidget {
 
 class _AddinformationState extends State<Addinformation> {
 
-  List storetypes = ["Grocery","Milk","Cake","Meat","Services","Electrical","Plumbing"];
+  List storetypes = ["Grocery","Milk","Cake","Meat","Services","Electrical","Plumbing","Medicines"];
   String storetype = "Grocery";
   String storename="";
   String type="";
