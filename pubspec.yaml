@@ -36,13 +36,14 @@ flutter:
   assets:
     - assets/icons/logo.png
     - assets/images/bg.png
-    - assets/images/bananas.png
+    - assets/images/chicken.png
     - assets/images/ambulance.png
     - assets/images/hand.png
     - assets/images/idea.png
     - assets/images/floating-ring.png
     - assets/images/add.png
     - assets/images/money.png
+    - assets/images/oops.png
 
   fonts:
     - family: Montserrat

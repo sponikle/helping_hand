@@ -27,13 +27,71 @@ class HttpService{
 
   Future getDictrict(state) async{
     List districts = [];
-    try{
+   try{
       String endpoint = "/getDistricts";
       var uri = baseurl + endpoint;
-      final body = {'state':'Odisha'};
+      final body = jsonEncode(
+        <String, String>{'state':state});
+      final response = await  http.post(uri,body: body,headers: <String, String>{'Content-Type':'application/json;charset=UTF-8'},);
+      if(response.statusCode == 200){
+        print('response districts');
+        print(jsonDecode(response.body));
+        var data = jsonDecode(response.body);
+        districts = data['message'];
+        return districts;
+      }
+   }catch(e){
+     return null;
+   }
+  }
 
+  Future getStores(district) async{
+    List stores =[];
+    print('Fetching data'); 
+    try{
+      String endpoint = "/getStores";
+      var uri = baseurl + endpoint;
+      final body = jsonEncode(<String,String>{
+        'district':district
+      });
+      final response = await http.post(uri,body:body,headers: <String,String>{'Content-Type':'application/json;charset=UTF-8'},);
+      if(response.statusCode == 200){
+        print('response stores');
+        print(jsonDecode(response.body));
+        var data = jsonDecode(response.body);
+        stores = data['stores'];
+        print('stores>>>>>>>>>>>>>');
+        print(stores);
+        return stores;
+      }
+    }catch(e){
+      return null;
+    }
+  }
+
+  Future getStoreByFilter(district,param) async{
+    List stores = [];
+    print('Fetching filtered data');
+    try{
+      String endpoint = "/getStores";
+      var uri = baseurl + endpoint ;
+      final body = jsonEncode(<String,String>{
+        'district':district,
+        'param':param
+      });
+      final response = await http.post(uri,body:body,headers:<String,String>{'Content-Type':'application/json;charset=UTF-8'});
+
+      if(response.statusCode == 200){
+        print('response stores filtered');
+        print(jsonDecode(response.body));
+        var data = jsonDecode(response.body);
+        stores = data['stores'];
+        print('stores>>>>>>>>>>>>>');
+        print(stores);
+        return stores;
+      }
     }catch(e){
 
-    } 
+    }
   }
 }

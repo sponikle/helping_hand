@@ -57,7 +57,7 @@ class _HomeState extends State<Home> {
             margin: EdgeInsets.fromLTRB(0.0, height*0.3, 0.0, 0.0),
             child: ListView(
               children: [
-                          CardWidget(name:"Grocery & Essentials",action:States(),color:0xffCFF1E3,image:"assets/images/bananas.png",size:EdgeInsets.fromLTRB(width*0.6, 5, 0, 0)),
+                          CardWidget(name:"Grocery & Essentials",action:States(),color:0xFFCFF1E3,image:"assets/images/chicken.png",size:EdgeInsets.fromLTRB(width*0.6, 5, 0, 0)),
                           CardWidget(name:"Services Offered",action:Services(),color:0xFFFFF5DD,image: "assets/images/ambulance.png",size:EdgeInsets.fromLTRB(width*0.6, 10, 0, 0)),
                           CardWidget(name:"Help Someone",action:BrowseHelps(),color: 0xFFFFEEDD,image:"assets/images/hand.png",size:EdgeInsets.fromLTRB(width*0.6, 10, 0, 0)),
                           CardWidget(name:"Request Help",action:RequestHelp(),color:0xFFFFF1F4,image:"assets/images/floating-ring.png",size:EdgeInsets.fromLTRB(width*0.7, 10, 0, 0)),
