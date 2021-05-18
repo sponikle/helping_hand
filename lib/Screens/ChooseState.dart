@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:helpinghand/Screens/Grocery.dart';
-import 'package:helpinghand/Services/DatabaseManager.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:helpinghand/Services/httpcall.dart';
 
 
 class States extends StatefulWidget {
@@ -12,23 +13,20 @@ class States extends StatefulWidget {
 
 class _StatesState extends State<States> {
   List states =[];
-  
+
+
   @override
   void initState() {
     super.initState();
     fetchStates();
   }
+  
   fetchStates()async{
-    dynamic resultant = await DatabaseManager().getStates();
-     if (resultant == null){
-      print("Unable to retrieve the states");
-    }else{
-      print(resultant);
-      setState(() {
-        
+    dynamic resultant = await HttpService().getStates();
+    print(resultant);
+    setState(() {
       states = resultant;
-      });
-    }
+    });
   }
 
   @override
@@ -61,13 +59,13 @@ class _StatesState extends State<States> {
             ),
             Container(
               margin: EdgeInsets.only(top: 100),
-              child: ListView.builder(
+              child: states != null ? ListView.builder(
                shrinkWrap: true,
               itemCount: states.length,
               itemBuilder: (context,index){
                 return CardWidget(nameOne:states[index]['name']);
               },
-              ),
+              ):SpinKitSquareCircle(color: Colors.green, size: 50.0),
             )
               ],
             

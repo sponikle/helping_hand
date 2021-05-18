@@ -47,7 +47,76 @@ class _StoreState extends State<Store> {
                    fontWeight:FontWeight.bold,
                    color:Colors.green
                  ),
-               )
+               ),
+               SizedBox(width: 180,),
+               IconButton(icon: Icon(Icons.filter_alt_outlined,size: 30.0,), onPressed: (){
+                 showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return ListView(
+                        children: <Widget>[
+                          ListTile(
+                            leading: new Icon(Icons.local_grocery_store_outlined,color: Colors.red,),
+                            title: new Text('Grocery Stores',style: TextStyle(color:Colors.green,fontSize: 18.0),),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          ListTile(
+                            leading: new Icon(Icons.medical_services_outlined,color: Colors.red,),
+                            title: new Text('Medicine Stores',style:TextStyle(color:Colors.green,fontSize: 18.0),),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+
+                          ListTile(
+                            leading: new Icon(Icons.set_meal_outlined,color: Colors.red,),
+                            title: new Text('Meat & Fish',style:TextStyle(color:Colors.green,fontSize: 18.0),),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          ListTile(
+                            leading: new Icon(Icons.ac_unit_outlined,color: Colors.red,),
+                            title: new Text('Milk Stores',style:TextStyle(color:Colors.green,fontSize: 18.0),),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          ListTile(
+                            leading: new Icon(Icons.cake_outlined,color: Colors.red,),
+                            title: new Text('Cake Stores',style:TextStyle(color:Colors.green,fontSize: 18.0),),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          ListTile(
+                            leading: new Icon(Icons.electrical_services_outlined,color: Colors.red,),
+                            title: new Text('Electrical Services',style:TextStyle(color:Colors.green,fontSize: 18.0),),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          ListTile(
+                            leading: new Icon(Icons.plumbing_outlined,color: Colors.red,),
+                            title: new Text('Plumbing Services',style:TextStyle(color:Colors.green,fontSize: 18.0),),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          ListTile(
+                            leading: new Icon(Icons.change_history,color: Colors.red,),
+                            title: new Text('Other Services',style:TextStyle(color:Colors.green,fontSize: 18.0),),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          
+                        ],
+                      );
+                    });
+               },color: Colors.green,)
              ],
            )
          ),
@@ -102,7 +171,6 @@ class CardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-      height: 250,
       width: double.maxFinite,
       child: GestureDetector(
           child: Card(
@@ -155,3 +223,4 @@ class CardWidget extends StatelessWidget {
     );
   }
 }
+
