@@ -1,67 +1,31 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:helpinghand/Screens/Home.dart';
 
-class Addinformation extends StatefulWidget {
+
+class AddService extends StatefulWidget {
+  AddService({Key key}) : super(key: key);
+
   @override
-  _AddinformationState createState() => _AddinformationState();
+  _AddServiceState createState() => _AddServiceState();
 }
 
-class _AddinformationState extends State<Addinformation> {
-
-  List storetypes = ["Grocery","Milk","Cake","Meat","Services","Electrical","Plumbing"];
-  String storetype = "Grocery";
-  String storename="";
+class _AddServiceState extends State<AddService> {
+  List servicetypes = ["Oxygen","Food","Last Rites","Transportation","Ambulance","Medical Care","Others"];
+  String servicetype = "Oxygen";
+  String providername="";
   String type="";
-  String number ="";
+  String providernumber ="";
+  String providercontactperson = "";
   String area ="";
   String district="";
-  String location ="";
-  String state="";
+  String state = "";
   String time ="";
-  bool homedelivery = true;
-  bool pickup = true;
-
-  submit(){
-    Map<String,dynamic> requestData = {
-      "store_name":storename,
-      "storetype":storetype,
-      "number":number,
-      "area":area,
-      "district":district,
-      "location":location,
-      "time":time,
-      "homedelivery":homedelivery,
-      "pickup":pickup
-    };
-    CollectionReference collectionReference = FirebaseFirestore.instance.collection("addRequests");
-    collectionReference.add(requestData);
-    showDialog(
-  context: context,
-  builder: (BuildContext context) {
-    return AlertDialog(
-      title: new Text("Success",style: TextStyle(color:Colors.green),),
-      content: new Text("Request Received",style: TextStyle(color:Colors.green[800],fontSize: 25.0),),
-      actions: <Widget>[
-        new ElevatedButton(
-          child: new Text("OK"),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
-          },
-        ),
-      ],
-    );
-  },
-);
-  }
-
+  bool paid = true;
   @override
   Widget build(BuildContext context) {
        double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-  
     return Scaffold(
-      body:Stack(
+      body: Stack(
         children: [
            Container(
             padding: EdgeInsets.fromLTRB(width*0.01, height*0.04, 0.0, 0.0),
@@ -73,7 +37,7 @@ class _AddinformationState extends State<Addinformation> {
                ],
              ),
            ),
-          Container(
+            Container(
             padding: EdgeInsets.fromLTRB(width*0.05, height*0.15, 0.0, 0.0),
             child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -84,19 +48,19 @@ class _AddinformationState extends State<Addinformation> {
                   fontSize: height*0.05,
                   fontWeight: FontWeight.w300
                 )),
-                Text('stores .',style: TextStyle(
+                Text('service .',style: TextStyle(
                 fontFamily: 'Montserrat',
                   fontSize: height*0.05,
                   fontWeight: FontWeight.w500
                 ),)
               ],
-            )
+            ),
           ),
           Container(
            padding: EdgeInsets.fromLTRB(5, height*0.3, 0.0, 0.0),
             child: ListView(
               children: [
-                Text('Store Type :',
+                Text('Service Type :',
                 style: TextStyle(
                   color: Colors.purple,
                   fontFamily: 'Montserrat',
@@ -104,14 +68,14 @@ class _AddinformationState extends State<Addinformation> {
                   )
                   ),
                 DropdownButton(
-                value: storetype,
+                value: servicetype,
                 isExpanded: true,
-                items:storetypes.map((e){
-                      return DropdownMenuItem(child: Text(e,style: TextStyle(color: Colors.blue[600],fontWeight: FontWeight.bold),), value:e ,);
+                items:servicetypes.map((e){
+                  return DropdownMenuItem(child: Text(e,style: TextStyle(color: Colors.blue[600],fontWeight: FontWeight.bold),), value:e ,);
                 }).toList(),
                 onChanged: (value) {
                   setState(() {
-                    this.storetype = value;
+                    this.servicetype = value;
                   });
                 },
                 hint: Text(
@@ -123,7 +87,7 @@ class _AddinformationState extends State<Addinformation> {
               ),
                 TextField(
                     decoration: InputDecoration(
-                        labelText: 'Store Name',
+                        labelText: 'Provider Name',
                         labelStyle: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
@@ -134,7 +98,7 @@ class _AddinformationState extends State<Addinformation> {
                             borderSide: BorderSide(color: Colors.green))),
                             onChanged: (value){
                               setState(() {
-                                this.storename = value;
+                                this.providername = value;
                               });
                             },
                   ),
@@ -144,7 +108,7 @@ class _AddinformationState extends State<Addinformation> {
                   TextField(
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
-                        labelText: 'Store number',
+                        labelText: 'Provider number',
                         labelStyle: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
@@ -155,7 +119,7 @@ class _AddinformationState extends State<Addinformation> {
                             borderSide: BorderSide(color: Colors.green))),
                             onChanged: (value){
                               setState(() {
-                                this.number = value;
+                                this.providernumber = value;
                               });
                             },
                   ),
@@ -164,11 +128,31 @@ class _AddinformationState extends State<Addinformation> {
                   ),
                   TextField(
                     decoration: InputDecoration(
-                        labelText: 'Store Area',
+                        labelText: 'Provider Contact Person',
                         labelStyle: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
-                            color: Colors.purple,),
+                            color:Colors.purple,),
+                        // hintText: 'EMAIL',
+                        // hintStyle: ,
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.green))),
+                            onChanged: (value){
+                              setState(() {
+                                this.providercontactperson = value;
+                              });
+                            },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                        labelText: 'Provider Location',
+                        labelStyle: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.bold,
+                            color:Colors.purple,),
                         // hintText: 'EMAIL',
                         // hintStyle: ,
                         focusedBorder: UnderlineInputBorder(
@@ -184,7 +168,7 @@ class _AddinformationState extends State<Addinformation> {
                   ),
                   TextField(
                     decoration: InputDecoration(
-                        labelText: 'District',
+                        labelText: 'Provider District',
                         labelStyle: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
@@ -204,7 +188,7 @@ class _AddinformationState extends State<Addinformation> {
                   ),
                   TextField(
                     decoration: InputDecoration(
-                        labelText: 'State',
+                        labelText: 'Provider State',
                         labelStyle: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
@@ -215,27 +199,7 @@ class _AddinformationState extends State<Addinformation> {
                             borderSide: BorderSide(color: Colors.green))),
                             onChanged: (value){
                               setState(() {
-                                this.district = value;
-                              });
-                            },
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    decoration: InputDecoration(
-                        labelText: 'Location',
-                        labelStyle: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.bold,
-                            color: Colors.purple,),
-                        // hintText: 'EMAIL',
-                        // hintStyle: ,
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.green))),
-                            onChanged: (value){
-                              setState(() {
-                                this.location = value;
+                                this.state = value;
                               });
                             },
                   ),
@@ -265,17 +229,17 @@ class _AddinformationState extends State<Addinformation> {
                   Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Homedelivery Available:',style: TextStyle(
+                    Text('Service is paid ? ',style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
                             color: Colors.purple,),),
                     ListTile(
                       leading: Radio(
                         value: true,
-                        groupValue: homedelivery,
+                        groupValue: paid,
                         onChanged: (value) {
                           setState(() {
-                            homedelivery = value;
+                            paid = value;
                           });
                         },
                       ),
@@ -287,10 +251,10 @@ class _AddinformationState extends State<Addinformation> {
                     ListTile(
                       leading: Radio(
                         value: false,
-                        groupValue: homedelivery,
+                        groupValue: paid,
                         onChanged: (value) {
                           setState(() {
-                            homedelivery = value;
+                            paid = value;
                           });
                         },
                       ),
@@ -330,8 +294,9 @@ class _AddinformationState extends State<Addinformation> {
               ],
             ),
           )
+        
         ],
-      )
+      ),
     );
   }
 }

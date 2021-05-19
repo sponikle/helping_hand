@@ -66,7 +66,7 @@ class _GroceryState extends State<Grocery> {
                ],
              ),
            ),
-              Container(
+            Container(
             padding: EdgeInsets.fromLTRB(width*0.05, height*0.15, 0.0, 0.0),
             child: Column(
             mainAxisAlignment: MainAxisAlignment.start,

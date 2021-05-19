@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:helpinghand/Screens/Addinformation.dart';
 import 'package:helpinghand/Screens/BrowseHelps.dart';
 import 'package:helpinghand/Screens/ChooseState.dart';
 import 'package:helpinghand/Screens/Donate.dart';
+import 'package:helpinghand/Screens/InformationType.dart';
 import 'package:helpinghand/Screens/Requesthelps.dart';
 import 'package:helpinghand/Screens/Services.dart';
 import 'package:helpinghand/Screens/Suggest.dart';
@@ -61,7 +61,7 @@ class _HomeState extends State<Home> {
                           CardWidget(name:"Services Offered",action:Services(),color:0xFFFFF5DD,image: "assets/images/ambulance.png",size:EdgeInsets.fromLTRB(width*0.6, 10, 0, 0)),
                           CardWidget(name:"Help Someone",action:BrowseHelps(),color: 0xFFFFEEDD,image:"assets/images/hand.png",size:EdgeInsets.fromLTRB(width*0.6, 10, 0, 0)),
                           CardWidget(name:"Request Help",action:RequestHelp(),color:0xFFFFF1F4,image:"assets/images/floating-ring.png",size:EdgeInsets.fromLTRB(width*0.7, 10, 0, 0)),
-                          CardWidget(name:"Add Information",action:Addinformation(),color:0xFFFEFEDE,image:"assets/images/add.png",size:EdgeInsets.fromLTRB(width*0.7, 10, 0, 0)),
+                          CardWidget(name:"Add Information",action:InformationCenter(),color:0xFFFEFEDE,image:"assets/images/add.png",size:EdgeInsets.fromLTRB(width*0.7, 10, 0, 0)),
                           CardWidget(name:"Suggest Us",action:Suggest(),color: 0xFFF6F4FF,image:"assets/images/idea.png",size:EdgeInsets.fromLTRB(width*0.6, 10, 0, 0)),
                           CardWidget(name:"Donate Us",action:Donate(),color:0xFFFCFD9F,image:"assets/images/money.png",size:EdgeInsets.fromLTRB(width*0.75, 10, 0, 0)),
                 ],

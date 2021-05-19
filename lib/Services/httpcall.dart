@@ -94,4 +94,26 @@ class HttpService{
 
     }
   }
+
+  Future getAllServices() async{
+    List services = [];
+    print("Fetching all services");
+    try{
+      String endpoint = "/fetchService";
+      var uri = baseurl + endpoint ;
+      final body = jsonEncode(<String,String>{
+        'param':'All'
+      });
+      final response = await http.post(uri,body:body,headers: <String,String>{'Content-Type':'application/json;charset=UTF-8'});
+      if(response.statusCode == 200){
+        print('response services');
+        print(jsonDecode(response.body));
+        var data = jsonDecode(response.body);
+        services = data['message'];
+        return services;
+      }
+    }catch(e){
+
+    }
+  }
 }
