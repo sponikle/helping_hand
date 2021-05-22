@@ -1,6 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:helpinghand/Screens/Home.dart';
+import 'package:helpinghand/Screens/InformationType.dart';
 import 'package:helpinghand/Services/httpcall.dart';
 
 class Addinformation extends StatefulWidget {
@@ -50,7 +49,7 @@ class _AddinformationState extends State<Addinformation> {
         new ElevatedButton(
           child: new Text("OK",style:TextStyle(fontFamily:'Montserrat')),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => InformationCenter()));
           },
         ),
       ],
