@@ -91,7 +91,8 @@ class HttpService{
         return stores;
       }
     }catch(e){
-
+        print(e);
+        return null;
     }
   }
 
@@ -113,7 +114,71 @@ class HttpService{
         return services;
       }
     }catch(e){
+      return null;
+    }
+  }
 
+  Future addService(obj) async{
+    print('Adding a service');
+    try{
+      String endpoint = "/addInformation";
+      var uri = baseurl + endpoint ;
+      final body = jsonEncode(<String,dynamic>{
+        "infoType":"Service",
+        "serviceType":obj['type'],
+      "offerredBy":obj['offered_by'],
+      "offeredLocation":obj['offered_location'],
+      "offeredDistrict":obj['offered_district'],
+      "offeredState":obj['offered_state'],
+      "offeredLink":obj['offered_link'],
+      "offeredArea":obj['offered_area'],
+      "chargable":obj['chargable'],
+      "serviceTime":obj['operation_time'],
+      "contactPerson":obj['contact_person'],
+      "contactNumber":obj['contact_number']
+      });
+      print(body);
+      final response = await http.post(uri,body:body,headers:<String,String>{'Content-Type':'application/json;charset=UTF-8'});
+      print(jsonDecode(response.body));
+      if(response.statusCode == 200){
+       print('response service added');
+       return jsonDecode(response.body); 
+      }
+    }catch(e){
+      print(e);
+      return null;
+    }
+  }
+
+
+  Future addStore(obj) async{
+    print('Adding a store');
+    try{
+      String endpoint = '/addInformation';
+      var uri = baseurl + endpoint;
+      final body = jsonEncode(<String,dynamic>{
+        "infoType":"Store",
+            "storeName":obj["store_name"],
+            "storeType":obj["storetype"],
+            "storeNumber":obj["number"],
+            "storeArea":obj["area"],
+            "storeDistrict":obj["district"],
+            "storeLocation":obj["location"],
+            "storeTime":obj["time"],
+            "homedelivery":obj["homedelivery"],
+            "pickup":obj["pickup"],
+      });
+      print(body);
+      final response = await http.post(uri,body:body,headers:<String,String>{'Content-Type':'application/json;charset=UTF-8'});
+      print(jsonDecode(response.body));
+       print(jsonDecode(response.body));
+      if(response.statusCode == 200){
+       print('response service added');
+       return jsonDecode(response.body); 
+      }
+    }catch(e){
+      print(e);
+      return null;
     }
   }
 }

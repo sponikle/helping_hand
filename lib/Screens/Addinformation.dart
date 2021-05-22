@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:helpinghand/Screens/Home.dart';
+import 'package:helpinghand/Services/httpcall.dart';
 
 class Addinformation extends StatefulWidget {
   @override
@@ -21,8 +22,12 @@ class _AddinformationState extends State<Addinformation> {
   String time ="";
   bool homedelivery = true;
   bool pickup = true;
+  bool isSubmitting= false;
 
   submit(){
+    setState(() {
+      isSubmitting = true;
+    });
     Map<String,dynamic> requestData = {
       "store_name":storename,
       "storetype":storetype,
@@ -34,17 +39,16 @@ class _AddinformationState extends State<Addinformation> {
       "homedelivery":homedelivery,
       "pickup":pickup
     };
-    CollectionReference collectionReference = FirebaseFirestore.instance.collection("addRequests");
-    collectionReference.add(requestData);
+    HttpService().addStore(requestData);
     showDialog(
   context: context,
   builder: (BuildContext context) {
     return AlertDialog(
-      title: new Text("Success",style: TextStyle(color:Colors.green),),
-      content: new Text("Request Received",style: TextStyle(color:Colors.green[800],fontSize: 25.0),),
+      title: new Text("Success",style: TextStyle(color:Colors.green,fontFamily:'Montserrat'),),
+      content: new Text("Request Received",style: TextStyle(color:Colors.green[800],fontSize: 25.0,fontFamily:'Montserrat'),),
       actions: <Widget>[
         new ElevatedButton(
-          child: new Text("OK"),
+          child: new Text("OK",style:TextStyle(fontFamily:'Montserrat')),
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
           },
@@ -53,6 +57,9 @@ class _AddinformationState extends State<Addinformation> {
     );
   },
 );
+setState(() {
+  isSubmitting= false;
+});
   }
 
   @override
@@ -311,8 +318,8 @@ class _AddinformationState extends State<Addinformation> {
                         shadowColor: Colors.purpleAccent,
                         color: Colors.purple[600],
                         elevation: 5.0,
-                        child: GestureDetector(
-                          onTap: (){},
+                        child: !isSubmitting ? GestureDetector(
+                          onTap: submit,
                           child: Center(
                             child: Text(
                               'Submit',
@@ -323,7 +330,16 @@ class _AddinformationState extends State<Addinformation> {
                                   fontFamily: 'Montserrat'),
                             ),
                           ),
-                        ),
+                        ):Center(
+                            child: Text(
+                              'Processing...',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0,
+                                  fontFamily: 'Montserrat'),
+                            ),
+                          ),
                       )),
                   ],
           )

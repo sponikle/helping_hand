@@ -1,25 +1,78 @@
 import 'package:flutter/material.dart';
+import 'package:helpinghand/Screens/Home.dart';
+import 'package:helpinghand/Screens/InformationType.dart';
+import 'package:helpinghand/Services/httpcall.dart';
 
 
 class AddService extends StatefulWidget {
-  AddService({Key key}) : super(key: key);
-
   @override
   _AddServiceState createState() => _AddServiceState();
 }
 
 class _AddServiceState extends State<AddService> {
+  
   List servicetypes = ["Oxygen","Food","Last Rites","Transportation","Ambulance","Medical Care","Others"];
   String servicetype = "Oxygen";
   String providername="";
-  String type="";
   String providernumber ="";
   String providercontactperson = "";
   String area ="";
   String district="";
   String state = "";
   String time ="";
+  String website ="";
+  String location ="";
   bool paid = true;
+  bool isSubmitting = false;
+
+
+// add data function
+
+submit(){
+    setState(() {
+      isSubmitting = true;
+    });
+    Map<String,dynamic> requestData ={
+      "type":servicetype,
+      "offered_by":providername,
+      "offered_location":location,
+      "offered_district":district,
+      "offered_state":state,
+      "offered_link":website,
+      "offered_area":area,
+      "chargable":paid,
+      "operation_time":time,
+      "contact_number":providernumber,
+      "contact_person":providercontactperson
+    };
+
+
+    HttpService().addService(requestData);
+    showDialog(
+  context: context,
+  builder: (BuildContext context) {
+    return AlertDialog(
+      title: new Text("Success",style: TextStyle(color:Colors.green,fontFamily: 'Montserrat'),),
+      content: new Text("Request Received",style: TextStyle(color:Colors.green[800],fontSize: 25.0,fontFamily: 'Montserrat'),),
+      actions: <Widget>[
+        new ElevatedButton(
+          child: new Text("OK",style:TextStyle(
+            fontFamily: 'Montserrat'
+          ),),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => InformationCenter()));
+          },
+        ),
+      ],
+    );
+    setState(() {
+      isSubmitting = false;
+    });
+  },
+);
+    
+}
+
   @override
   Widget build(BuildContext context) {
        double height = MediaQuery.of(context).size.height;
@@ -148,7 +201,47 @@ class _AddServiceState extends State<AddService> {
                   ),
                   TextField(
                     decoration: InputDecoration(
+                        labelText: 'Website ',
+                        labelStyle: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.bold,
+                            color:Colors.purple,),
+                        // hintText: 'EMAIL',
+                        // hintStyle: ,
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.green))),
+                            onChanged: (value){
+                              setState(() {
+                                this.website = value;
+                              });
+                            },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
                         labelText: 'Provider Location',
+                        labelStyle: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.bold,
+                            color:Colors.purple,),
+                        // hintText: 'EMAIL',
+                        // hintStyle: ,
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.green))),
+                            onChanged: (value){
+                              setState(() {
+                                this.location = value;
+                              });
+                            },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                        labelText: 'Provider area',
                         labelStyle: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
@@ -275,8 +368,8 @@ class _AddServiceState extends State<AddService> {
                         shadowColor: Colors.purpleAccent,
                         color: Colors.purple[600],
                         elevation: 5.0,
-                        child: GestureDetector(
-                          onTap: (){},
+                        child: !isSubmitting ? GestureDetector(
+                          onTap: submit,
                           child: Center(
                             child: Text(
                               'Submit',
@@ -287,7 +380,16 @@ class _AddServiceState extends State<AddService> {
                                   fontFamily: 'Montserrat'),
                             ),
                           ),
-                        ),
+                        ):Center(
+                            child: Text(
+                              'Processing..',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0,
+                                  fontFamily: 'Montserrat'),
+                            ),
+                          ),
                       )),
                   ],
           )

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_swipable/flutter_swipable.dart';
 
 import 'package:helpinghand/Services/httpcall.dart';
 import 'package:url_launcher/url_launcher.dart';
