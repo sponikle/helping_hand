@@ -8,7 +8,7 @@ class Donate extends StatelessWidget {
     String firstpara = "Building 'Helping Hand' was not easy , our only goal is to help people . But cloud services are not cheap these days . We need your support to help you uninterruptibly .\n If you appreciate our hard work ,Cheers mate buy us a coffee ☕. Pay to the UPI below to support us.";
     String upi = "biswas.thependev@okhdfcbank";
     String biswas = "The culprit behind the bugs in codes . Single handedly able to become the culprit, victim and investigator behind the screens (Developer & Debugger). Loves to cook more than code . \n Coffee with code is the best thing to do in life for him . Software Engineer & Cyber Security Consultant by profession , Poet by passion.";
-    String ankita = "Made the call about the idea of helping people in pandemic,";
+    String ankita = "A Ph.d Scholar with a humanitarian outlook , and the idea generator of 'Helping hand' which got born after she observed the problems people faced while searching for different resources in this pandemic time .";
         return Scaffold(
           body: Stack(
             children: <Widget>[
@@ -86,6 +86,25 @@ class Donate extends StatelessWidget {
                           Container(
                         margin: EdgeInsets.fromLTRB(width*0.01, height*0.01, 0.0, 0.0),
                            child: Text(ankita,style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: height*0.03,
+                          fontWeight: FontWeight.w400
+                        )),
+                     ),
+                     SizedBox(height: height*0.1,),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(width*0.01, height*0.01, 0.0, 0.0),
+                           child: Text("We are open for joining our team as free contributer . Contact us at 'biswassampads@rediffmail.com'",style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: height*0.03,
+                          fontWeight: FontWeight.w600
+                        )),
+                     ),
+                     SizedBox(height: height*0.1,),
+
+                      Container(
+                        margin: EdgeInsets.fromLTRB(width*0.01, height*0.01, 0.0, 0.0),
+                           child: Text( 'A Biswas Sampad Production with 💜',style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: height*0.03,
                           fontWeight: FontWeight.w400
