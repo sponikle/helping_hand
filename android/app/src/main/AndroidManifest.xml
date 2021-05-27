@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.helpinghand">
+    package="com.sponikle.helpinghand">
    <application
         android:label="Helping Hand"
         android:icon="@mipmap/launcher_icon">

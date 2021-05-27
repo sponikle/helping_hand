@@ -1,27 +1,27 @@
 {
     "project_info": {
-        "project_number": "835843346126",
-        "project_id": "helpinghand-c93d9",
-        "storage_bucket": "helpinghand-c93d9.appspot.com"
+        "project_number": "1050278293874",
+        "project_id": "helpinghand-51cdf",
+        "storage_bucket": "helpinghand-51cdf.appspot.com"
     },
     "client": [{
         "client_info": {
-            "mobilesdk_app_id": "1:835843346126:android:1d233c05fe68d5e3030a9f",
+            "mobilesdk_app_id": "1:1050278293874:android:245778406b46f799a82deb",
             "android_client_info": {
-                "package_name": "com.example.helpinghand"
+                "package_name": "com.sponikle.helpinghand"
             }
         },
         "oauth_client": [{
-            "client_id": "835843346126-ibe75dn4cjvv78audblphketivmg231b.apps.googleusercontent.com",
+            "client_id": "1050278293874-6a59fevsr0jpas0bp65b5hnm8mucpgjj.apps.googleusercontent.com",
             "client_type": 3
         }],
         "api_key": [{
-            "current_key": "AIzaSyAyV-IywjfZezv_jj-gBVpVPEPry8Ak5gM"
+            "current_key": "AIzaSyCwk2bux2AE7SNxpyir8DaZlNRebQ1qaQ4"
         }],
         "services": {
             "appinvite_service": {
                 "other_platform_oauth_client": [{
-                    "client_id": "835843346126-ibe75dn4cjvv78audblphketivmg231b.apps.googleusercontent.com",
+                    "client_id": "1050278293874-6a59fevsr0jpas0bp65b5hnm8mucpgjj.apps.googleusercontent.com",
                     "client_type": 3
                 }]
             }
