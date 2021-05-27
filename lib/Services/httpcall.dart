@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 class HttpService{
-  final String baseurl = "https://anamika.helpinghand.ind.in/v1/";
+  final String baseurl = "https://asthu.helpinghand.ind.in/v1/";
   
   Future getStates() async{
     List states =[];
@@ -167,6 +169,169 @@ class HttpService{
             "storeTime":obj["time"],
             "homedelivery":obj["homedelivery"],
             "pickup":obj["pickup"],
+      });
+      print(body);
+      final response = await http.post(uri,body:body,headers:<String,String>{'Content-Type':'application/json;charset=UTF-8'});
+      print(jsonDecode(response.body));
+       print(jsonDecode(response.body));
+      if(response.statusCode == 200){
+       print('response service added');
+       return jsonDecode(response.body); 
+      }
+    }catch(e){
+      print(e);
+      return null;
+    }
+  }
+
+  Future requesthelp(obj) async{
+    print('Adding a store');
+    try{
+      String endpoint = '/requestHelp';
+      var uri = baseurl + endpoint;
+      final body = jsonEncode(<String,dynamic>{
+        "request_type":obj["requestType"],
+      "_priority":obj["_priority"],
+      "name":obj["name"],
+      "number":obj["number"],
+      "address":obj["address"],
+      "state":obj["state"],
+      "district":obj["district"],
+      "description":obj["description"]
+      });
+      print(body);
+      final response = await http.post(uri,body:body,headers:<String,String>{'Content-Type':'application/json;charset=UTF-8'});
+       print(jsonDecode(response.body));
+      if(response.statusCode == 200){
+          print('response service added');
+          Map<String, dynamic>  data = new Map<String, dynamic>.from(jsonDecode(response.body));
+          print('Printing data :');
+          print(data);
+          var token = data['token'];
+          print(token);
+          final directory = await getApplicationDocumentsDirectory();
+          final file = File('${directory.path}/tokens.txt');
+          print(file);
+          try{
+            String text = await file.readAsString();
+          var newdata = text+","+token;
+          await file.writeAsString(newdata);
+          return newdata; 
+          }catch(e){
+          await file.writeAsString('1122');
+            String text = await file.readAsString();
+          var newdata = text+","+token;
+          await file.writeAsString(newdata);
+          return newdata; 
+          }
+      }
+    }catch(e){
+      print(e);
+      return null;
+    }
+  }
+
+  Future getMyRequests(tokens) async{
+    print('Fetching the requests');
+    try{
+      String endpoint = "/fetchMyHelps";
+      var uri = baseurl + endpoint ;
+      final body = jsonEncode(<String,String>{
+        'token_list':tokens
+      });
+      final response = await http.post(uri,body:body,headers:<String,String>{'Content-Type':'application/json;charset=UTF-8'});
+
+      if(response.statusCode == 200){
+        print('response stores filtered');
+        print(jsonDecode(response.body));
+        Map<String, dynamic> data = jsonDecode(response.body);
+        if(data["message"] == [] ){
+          return null;
+        }
+        return data["message"];
+      }
+    }catch(e){
+      print('Going to error');
+        print(e);
+        return null;
+    }
+    
+    }
+
+    Future getPerticularRequest(id) async{
+    try{
+      String endpoint = "/fetchHelpById";
+      var uri = baseurl + endpoint ;
+      final body = jsonEncode(<String,String>{
+        'id':id
+      });
+      final response = await http.post(uri,body:body,headers:<String,String>{'Content-Type':'application/json;charset=UTF-8'});
+
+      if(response.statusCode == 200){
+        print('response stores filtered');
+        print(jsonDecode(response.body));
+        Map<String, dynamic> data = jsonDecode(response.body);
+        return data["message"];
+      }
+    }catch(e){
+        print(e);
+        return null;
+    }
+    }
+
+     Future sendComment(id,comment) async{
+      try{
+        String endpoint = "/addCommentToHelp";
+        var uri = baseurl + endpoint ;
+        final body = jsonEncode(<String,String>{
+          'id':id,
+          'comment':comment
+        });
+        final response = await http.post(uri,body:body,headers:<String,String>{'Content-Type':'application/json;charset=UTF-8'});
+
+        if(response.statusCode == 200){
+          print('response stores filtered');
+        return true;
+        }
+      }catch(e){
+          print(e);
+          return null;
+      }
+    }
+    // fetchHelp
+
+    Future fetchHelps() async{
+    print('Fetching the requests');
+    try{
+      String endpoint = "/fetchHelp";
+      var uri = baseurl + endpoint ;
+      final body = jsonEncode(<String,String>{
+        'param':"All"
+      });
+      final response = await http.post(uri,body:body,headers:<String,String>{'Content-Type':'application/json;charset=UTF-8'});
+
+      if(response.statusCode == 200){
+        print('response stores filtered');
+        print(jsonDecode(response.body));
+        Map<String, dynamic> data = jsonDecode(response.body);
+        return data["message"];
+      }
+    }catch(e){
+        print(e);
+        return null;
+    }
+    
+    }
+
+  Future addSuggestions(obj) async{
+    print('Adding a store');
+    try{
+      String endpoint = '/addSuggestion';
+      var uri = baseurl + endpoint;
+      final body = jsonEncode(<String,dynamic>{
+        "name":obj["name"],
+        "email":obj["email"],
+        "suggestion":obj["suggestion"]
       });
       print(body);
       final response = await http.post(uri,body:body,headers:<String,String>{'Content-Type':'application/json;charset=UTF-8'});

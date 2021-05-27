@@ -199,8 +199,7 @@ class CardWidget extends StatelessWidget {
       double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Container(
-      height: height*0.33,
-      margin: EdgeInsets.only(top:5),
+      margin: EdgeInsets.only(top:5,bottom:5),
       decoration: BoxDecoration(
         border: Border.all(width: 2.0,color:Colors.blueGrey[400]),
         borderRadius: BorderRadius.all(Radius.elliptical(20, 20))
@@ -297,7 +296,7 @@ class CardWidget extends StatelessWidget {
                   fontSize: 20,
                   fontWeight: FontWeight.bold
                 ),),
-                SizedBox(width:width*0.2),
+                Expanded(child: SizedBox()),
                 Container(
                    height: 60,
                 width:60,

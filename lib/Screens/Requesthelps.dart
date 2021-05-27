@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:helpinghand/Screens/BrowseHelps.dart';
+import 'package:helpinghand/Screens/MyHelps.dart';
+import 'package:helpinghand/Services/httpcall.dart';
 
 class RequestHelp extends StatefulWidget {
 
@@ -10,7 +10,7 @@ class RequestHelp extends StatefulWidget {
 
 class _RequestHelpState extends State<RequestHelp> {
       String _requestType = "Medicines";
-      List requestType =["Blood","Oxygen Tank","Medicines","Plasma","Consultation","Food","Job","Transportation","Shelter","NGO Drive","Feed The Animals"];  
+      List requestType =["Blood","Oxygen","Medicines","Plasma","Consultation","Food","Job","Transport","Shelter","NGO Drive"];  
       String _priority = "High";
       List priority = ["High","Medium","Low"];
       String name="";
@@ -19,8 +19,12 @@ class _RequestHelpState extends State<RequestHelp> {
       String state ="";
       String district ="";
       String description ="";
+      bool isSubmitting= false;
 
   request(){
+    setState(() {
+      isSubmitting = true;
+    });
     Map<String,dynamic> requestData = {
       "requestType":_requestType,
       "_priority":_priority,
@@ -29,70 +33,95 @@ class _RequestHelpState extends State<RequestHelp> {
       "address":address,
       "state":state,
       "district":district,
-      "descriptiom":description
+      "description":description
     };
 
-    CollectionReference collectionReference = FirebaseFirestore.instance.collection("helpRequests");
-    collectionReference.add(requestData);
-   showDialog(
-  context: context,
-  builder: (BuildContext context) {
-    return AlertDialog(
-      title: new Text("Success",style: TextStyle(color:Colors.green),),
-      content: new Text("Request Received",style: TextStyle(color:Colors.green[800],fontSize: 25.0),),
-      actions: <Widget>[
-        new ElevatedButton(
-          child: new Text("OK"),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => BrowseHelps()));
-          },
-        ),
-      ],
-    );
-  },
-);
+   var token = HttpService().requesthelp(requestData);
+   if(token != null){
+     print(token);
+     
+     showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text("Success",style: TextStyle(color:Colors.green),),
+            content: new Text("Request Received",style: TextStyle(color:Colors.green[800],fontSize: 25.0),),
+            actions: <Widget>[
+              new ElevatedButton(
+                child: new Text("OK"),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MyHelps()));
+                },
+              ),
+            ],
+          );
+        },
+      );
+      setState(() {
+        isSubmitting = false;
+      });
+   }
+   
   }
 
 
 
   @override
   Widget build(BuildContext context) {
+        double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+  
     return Scaffold(
       body: Stack(
        children: [
+         Container(
+            padding: EdgeInsets.fromLTRB(width*0.01, height*0.04, 0.0, 0.0),
+             child: Row(
+               children: <Widget>[
+                 IconButton(icon: Icon(Icons.arrow_back_ios_rounded), onPressed: ()=>{Navigator.pop(context)}),
+                 SizedBox(width:width*0.5),
+                TextButton(onPressed: ()=>{
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MyHelps()))
+                }, child:Text("Your requests".toUpperCase(),style:TextStyle(color:Colors.black,fontFamily: 'Montserrat',fontWeight:FontWeight.w400),))
+               ],
+             ),
+           ),
            Container(
-            padding: EdgeInsets.fromLTRB(15.0, 80.0, 0.0, 0.0),
-            child: Row(
-              children: [
-              Text(
-              "Request",
-              style: TextStyle(
-                fontSize: 50.0,
-                fontWeight: FontWeight.bold
-              ),
-              ),
-              SizedBox(width: 10,),
-            Text(
-              "Help",
-              style: TextStyle(
-                fontSize: 50.0,
-                fontWeight: FontWeight.bold,
-                color:Colors.green
-              ),
-            ),
+            padding: EdgeInsets.fromLTRB(width*0.05, height*0.15, 0.0, 0.0),
+            child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('Ask for',style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: height*0.05,
+                  fontWeight: FontWeight.w300
+                )),
+                Text('Help .',style: TextStyle(
+                fontFamily: 'Montserrat',
+                  fontSize: height*0.05,
+                  fontWeight: FontWeight.w500
+                ),)
               ],
             )
           ),
          Container(
-           padding: EdgeInsets.fromLTRB(15.0, 170.0, 0.0, 0.0),
+           margin: EdgeInsets.fromLTRB(5, height*0.3, 0.0, 0.0),
 
             child:ListView(
               children: [
+                Text('Help Type :',
+                style: TextStyle(
+                  color: Colors.purple,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
+                  )
+                  ),
               DropdownButton(
                 value: _requestType,
                 isExpanded: true,
                 items:requestType.map((e){
-                  return DropdownMenuItem(child: Text(e,style: TextStyle(color: Colors.green),), value:e ,);
+                  return DropdownMenuItem(child: Text(e,style: TextStyle(color: Colors.blue[600],fontFamily: 'Montserrat'),), value:e ,);
                 }).toList(),
                 onChanged: (value) {
                   setState(() {
@@ -112,7 +141,7 @@ class _RequestHelpState extends State<RequestHelp> {
                         labelStyle: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
-                            color: Colors.grey),
+                            color: Colors.purple),
                         // hintText: 'EMAIL',
                         // hintStyle: ,
                         focusedBorder: UnderlineInputBorder(
@@ -133,7 +162,7 @@ class _RequestHelpState extends State<RequestHelp> {
                         labelStyle: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
-                            color: Colors.grey),
+                            color: Colors.purple),
                         // hintText: 'EMAIL',
                         // hintStyle: ,
                         focusedBorder: UnderlineInputBorder(
@@ -154,7 +183,7 @@ class _RequestHelpState extends State<RequestHelp> {
                         labelStyle: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
-                            color: Colors.grey),
+                            color: Colors.purple),
                         // hintText: 'EMAIL',
                         // hintStyle: ,
                         focusedBorder: UnderlineInputBorder(
@@ -175,7 +204,7 @@ class _RequestHelpState extends State<RequestHelp> {
                         labelStyle: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
-                            color: Colors.grey),
+                            color: Colors.purple),
                         // hintText: 'EMAIL',
                         // hintStyle: ,
                         focusedBorder: UnderlineInputBorder(
@@ -196,7 +225,7 @@ class _RequestHelpState extends State<RequestHelp> {
                         labelStyle: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
-                            color: Colors.grey),
+                            color: Colors.purple),
                         // hintText: 'EMAIL',
                         // hintStyle: ,
                         focusedBorder: UnderlineInputBorder(
@@ -211,11 +240,18 @@ class _RequestHelpState extends State<RequestHelp> {
               SizedBox(
                 height: 10,
               ),
+               Text('Priority:',
+                style: TextStyle(
+                  color: Colors.purple,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
+                  )
+                  ),
                   DropdownButton(
                     value: _priority,
                     isExpanded: true,
                     items:priority.map((e){
-                      return DropdownMenuItem(child: Text(e,style: TextStyle(color: Colors.green),), value:e ,);
+                      return DropdownMenuItem(child: Text(e,style: TextStyle(color: Colors.blue[600],fontFamily: 'Montserrat'),), value:e ,);
                     }).toList(),
                     onChanged: (value) {
                       setState(() {
@@ -239,7 +275,7 @@ class _RequestHelpState extends State<RequestHelp> {
                         labelStyle: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
-                            color: Colors.grey),
+                            color: Colors.purple),
                         // hintText: 'EMAIL',
                         // hintStyle: ,
                         focusedBorder: UnderlineInputBorder(
@@ -256,17 +292,18 @@ class _RequestHelpState extends State<RequestHelp> {
               ),
                 Container(
                       height: 60.0,
+                      width: width*0.9,
                       margin: EdgeInsets.only(bottom: 30),
                       child: Material(
                         borderRadius: BorderRadius.circular(20.0),
-                        shadowColor: Colors.greenAccent,
-                        color: Colors.green,
+                        shadowColor: Colors.purpleAccent,
+                        color: Colors.purple[600],
                         elevation: 5.0,
-                        child: GestureDetector(
+                        child: !isSubmitting ? GestureDetector(
                           onTap: request,
                           child: Center(
                             child: Text(
-                              'Request',
+                              'Submit',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -274,7 +311,16 @@ class _RequestHelpState extends State<RequestHelp> {
                                   fontFamily: 'Montserrat'),
                             ),
                           ),
-                        ),
+                        ):Center(
+                            child: Text(
+                              'Processing...',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0,
+                                  fontFamily: 'Montserrat'),
+                            ),
+                          ),
                       )),
               ],
             )

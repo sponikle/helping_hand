@@ -1,56 +1,80 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:helpinghand/Screens/RequestView.dart';
+import 'package:path_provider/path_provider.dart';
+
 import 'package:helpinghand/Services/httpcall.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+class MyHelps extends StatefulWidget {
 
-class BrowseHelps extends StatefulWidget {
   @override
-  _BrowseHelpsState createState() => _BrowseHelpsState();
+  _MyHelpsState createState() => _MyHelpsState();
 }
 
-class _BrowseHelpsState extends State<BrowseHelps> {
+class _MyHelpsState extends State<MyHelps> {
 
-  List helps =[];
+  List myrequests=[];
   bool isLoading = false;
-
   @override
+  
   void initState() {
     super.initState();
+    getTokenList();
     setState(() {
       isLoading = true;
     });
-    fetchHelps();
-    
   }
 
-  fetchHelps()async{
-    var resultant = await HttpService().fetchHelps();
-    print(resultant);
-    setState(() {
-      helps = resultant;
-      isLoading = false;
-    });
+  getTokenList()async{
+    try{
+      final directory = await getApplicationDocumentsDirectory();
+     final file = await File('${directory.path}/tokens.txt');
+      String text = await file.readAsString();
+      List list =  await getMyhelpRequests(text);
+      print(">>>>>>>>>>>>>>>>");
+      print(list);
+
+        setState(() {
+        myrequests = list;
+        isLoading = false;
+      });
+      
+      print(myrequests);
+    }catch(e){
+      setState(() {
+        myrequests = [];
+        isLoading = false;
+      });
+    }
   }
+
+  getMyhelpRequests(tokens)async{
+    var requestList = await HttpService().getMyRequests(tokens);
+   if(requestList== null){
+     return [];
+   }
+   return requestList;
+  }
+
   @override
   Widget build(BuildContext context) {
-     double height = MediaQuery.of(context).size.height;
+    double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-   
-     return Scaffold(
-     body:Stack(
-       children: [
-         Container(
+    return Scaffold(
+      body:Stack(
+        children: [
+          Container(
             padding: EdgeInsets.fromLTRB(width*0.01, height*0.04, 0.0, 0.0),
              child: Row(
                children: <Widget>[
                  IconButton(icon: Icon(Icons.arrow_back_ios_rounded,color: Colors.purple,), onPressed: ()=>{Navigator.pop(context)}),
                  SizedBox(width:width*0.6),
                 TextButton(onPressed: ()=>{
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) => MyHelps()))
-                },
-                child:Text("Report".toUpperCase(),style:TextStyle(color:Colors.purple,fontFamily: 'Montserrat',fontWeight:FontWeight.w600),))
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MyHelps()))
+                }, child:Text("Add New".toUpperCase(),style:TextStyle(color:Colors.purple,fontFamily: 'Montserrat',fontWeight:FontWeight.w600),))
                ],
              ),
            ),
@@ -60,7 +84,7 @@ class _BrowseHelpsState extends State<BrowseHelps> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('Help',style: TextStyle(
+                Text('Your',style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: height*0.05,
                   fontWeight: FontWeight.w300
@@ -73,7 +97,7 @@ class _BrowseHelpsState extends State<BrowseHelps> {
               ],
             )
           ),
-          isLoading? SpinKitSquareCircle(color: Colors.green, size: 50.0) : helps.isEmpty?
+          isLoading ? SpinKitSquareCircle(color: Colors.green, size: 50.0) : myrequests.isEmpty?
           Container(
             child: Center(
               child: Container(
@@ -91,19 +115,19 @@ class _BrowseHelpsState extends State<BrowseHelps> {
           ):Container(
              margin: EdgeInsets.fromLTRB(0,height*0.3, 0.0, 5),
              child: ListView.builder( shrinkWrap: true,
-             itemCount: helps.length,
+             itemCount: myrequests.length,
              itemBuilder: (context,index){
              return CardWidget(
-               name:helps[index]["name"],
-               priority: helps[index]["_priority"],
-               requestType: helps[index]["request_type"],
-               number:helps[index]["number"],
-               address: helps[index]["address"],
-               state:helps[index]["state"],
-               district:helps[index]["district"],
-              description: helps[index]["description"] ,
-              comments :helps[index]["comments"].length,
-              requestid:helps[index]["_id"]
+               name:myrequests[index]["name"],
+               priority: myrequests[index]["_priority"],
+               requestType: myrequests[index]["request_type"],
+               number:myrequests[index]["number"],
+               address: myrequests[index]["address"],
+               state:myrequests[index]["state"],
+               district:myrequests[index]["district"],
+              description: myrequests[index]["description"] ,
+              comments :myrequests[index]["comments"].length,
+              requestid:myrequests[index]["_id"]
              );
            }),
            )
@@ -112,6 +136,7 @@ class _BrowseHelpsState extends State<BrowseHelps> {
     );
   }
 }
+
 
 
 class CardWidget extends StatelessWidget {
