@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:helpinghand/Screens/Stores.dart';
-import 'package:helpinghand/Services/DatabaseManager.dart';
+import 'package:helpinghand/Services/httpcall.dart';
 
 class Grocery extends StatefulWidget {
   final String state;
@@ -27,59 +30,75 @@ class _GroceryState extends State<Grocery> {
   }
 
   fetchDistricList() async{
-    dynamic resultant = await DatabaseManager().getDistricts(widget.state);
+    // dynamic resultant = await DatabaseManager().getDistricts(widget.state);
 
-    if (resultant == null){
-      print("Unable to retrieve the data");
-    }else{
-      print(resultant);
-      setState(() {
+    // if (resultant == null){
+    //   print("Unable to retrieve the data");
+    // }else{
+    //   print(resultant);
+    //   setState(() {
         
-      districts = resultant;
+    //   districts = resultant;
+    //   });
+    // }
+
+    dynamic resultant = await HttpService().getDictrict(widget.state);
+     print(resultant);
+      setState(() {
+        districts = resultant;
       });
-    }
   }
-  @override
+
+ @override
   Widget build(BuildContext context) {
-        return new Scaffold(
+     double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    return Scaffold(
           body: Stack(
-            children: [
-              Container(
-            padding: EdgeInsets.fromLTRB(15.0, 80.0, 0.0, 0.0),
-            child: Row(
-              children: [
-              Text(
-              "Select",
-              style: TextStyle(
-                fontSize: 30.0,
-                fontWeight: FontWeight.bold
-              ),
-              ),
-              SizedBox(width: 5,),
-            Text(
-              " District",
-              style: TextStyle(
-                fontSize: 30.0,
-                fontWeight: FontWeight.bold,
-                color:Colors.green
-              ),
-            ),
+         children: [
+           Container(
+            padding: EdgeInsets.fromLTRB(width*0.01, height*0.04, 0.0, 0.0),
+             child: Row(
+               children: <Widget>[
+                 IconButton(icon: Icon(Icons.arrow_back_ios_rounded), onPressed: ()=>{Navigator.pop(context)}),
+                 SizedBox(width:width*0.6),
+                TextButton(onPressed: ()=>{}, child:Text("Report",style:TextStyle(color:Colors.black,fontFamily: 'Montserrat',fontWeight:FontWeight.w400),))
+               ],
+             ),
+           ),
+            Container(
+            padding: EdgeInsets.fromLTRB(width*0.05, height*0.15, 0.0, 0.0),
+            child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('Choose',style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: height*0.05,
+                  fontWeight: FontWeight.w300
+                )),
+                Text('your district',style: TextStyle(
+                fontFamily: 'Montserrat',
+                  fontSize: height*0.05,
+                  fontWeight: FontWeight.w500
+                ),)
               ],
-            )
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 100),
-            child: ListView.builder(
-             shrinkWrap: true,
-            itemCount: districts.length,
-            itemBuilder: (context,index){
-              return CardWidget(nameOne:districts[index]['name']);
-            },
             ),
-          )
-            ],
           ),
-      );  
+           districts.length ==0 ? SpinKitSquareCircle(color: Colors.green, size: 50.0): Container(
+              margin: EdgeInsets.only(top: height*0.25),
+              child: ListView.builder(
+               shrinkWrap: true,
+              itemCount: districts.length,
+              itemBuilder: (context,index){
+                return CardWidget(nameOne:districts[index]['name']);
+              },
+              ),
+            )
+              ],
+            
+      ),
+    );
   }
 }
 
@@ -88,34 +107,43 @@ class CardWidget extends StatelessWidget {
   var nameOne;
   var nametwo;
   var action;
-
   CardWidget({
     Key key,
-    this.nameOne,
-    this.nametwo,
-    this.action,
+    this.nameOne
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+   double height = MediaQuery.of(context).size.height;
+   Color color = Color(Random().nextInt(0xffCFF1)).withAlpha(0xFF);
     return Container(
-      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-      height: 150,
+      height: height*0.1,
+      margin: EdgeInsets.only(top: 10),
       width: double.maxFinite,
+      decoration: BoxDecoration(
+         boxShadow:[ 
+               BoxShadow(
+                  color: color.withOpacity(0.5), //color of shadow
+                  spreadRadius: 1, //spread radius
+                  blurRadius: 1, // blur radius
+                  offset: Offset(0, 0), // changes position of shadow
+               ),
+              ],
+      ),
       child: GestureDetector(
-        onTap: ()=>{Navigator.push(context, MaterialPageRoute(builder: (context) => Store(district:this.nameOne)))},
+        onTap: ()=>{Navigator.push(context, MaterialPageRoute(builder: (context) => Store(district:nameOne,)))},
           child: Card(
-          elevation: 6,
+          elevation: 1,
           child: Container( 
               child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(top: 40,left: 20),
+                  padding: const EdgeInsets.only(top: 15,left: 20),
                   child:Center(
                     child: Row(
                       children: [
-                        Text(nameOne,style: TextStyle(fontSize: 35.0,fontWeight: FontWeight.bold),),
+                        Text(nameOne,style: TextStyle(fontSize: height*0.03,fontFamily: 'Montserrat',color: color),),
                        ],
                     ),
                   )
